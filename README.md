@@ -4,14 +4,14 @@
     <img src="screenshot.jpg" alt="Lot - Scripture Draw Interface" width="800" style="border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" />
   </a>
   <br /><br />
-  <h1>Lot &mdash; A Sacred Scripture Draw/ Random Bible book/chapter/verse generator </h1>
+  <h1>Lot &mdash; A Sacred Scripture Draw </h1>
   <p>
     <strong>"The lot is cast into the lap, but its every decision is from the Lord." — Proverbs 16:33</strong><br/><br/>
     An ultra-minimalist, mathematically verified instrument for drawing random Bible verses. <br/>
     No curated algorithms. No digital noise. Just the raw, ancient text.
   </p>
   <p>
-    <a href="https://bible-lot.vercel.app/">Enter the Sanctuary (Live Demo)</a>
+    <a href="https://bible-lot.vercel.app/"> Random Bible book/chapter/verse generator(Live Demo)</a>
     ·
     <a href="https://github.com/your-username/lot/issues">Report Bug</a>
     ·
