@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bible-lot.vercel.app/sitemap.xml
