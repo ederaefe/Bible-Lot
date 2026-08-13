@@ -1,0 +1,16 @@
+{
+  "name": "Lot &mdash; Sacred Scripture Draw",
+  "short_name": "Lot",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF9F6",
+  "theme_color": "#FAF9F6",
+  "description": "An ultra-minimalist instrument for drawing verified random Bible verses and Scripture references.",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%231A1C20' stroke='%23B89947' stroke-width='24'/%3E%3Cpath d='M150 140h150v40h-40v180h70v-40h40v80H150v-40h40V180h-40z' fill='%23FAF9F6'/%3E%3Ccircle cx='415' cy='370' r='32' fill='%238C2B2B'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
