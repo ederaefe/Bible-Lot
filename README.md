@@ -13,9 +13,9 @@
   <p>
     <a href="https://bible-lot.vercel.app/">Generate a random chapter (Live Demo)</a>
     ·
-    <a href="https://github.com/your-username/lot/issues">Report Bug</a>
+    <a href="https://github.com/ederaefe/Bible-Lot/discussions/categories/report-bug">Report Bug</a>
     ·
-    <a href="https://github.com/your-username/lot/issues">Request Feature</a>
+    <a href="https://github.com/ederaefe/Bible-Lot/discussions/categories/request-features">Request Feature</a>
   </p>
 
   ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
