@@ -11,7 +11,7 @@
     No curated algorithms. No digital noise. Just the raw, ancient text.
   </p>
   <p>
-    <a href="https://bible-lot.vercel.app/">Enter the Sanctuary (Live Demo)</a>
+    <a href="https://bible-lot.vercel.app/">Generate a random chapter (Live Demo)</a>
     ·
     <a href="https://github.com/your-username/lot/issues">Report Bug</a>
     ·
