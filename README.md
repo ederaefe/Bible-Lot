@@ -4,14 +4,14 @@
     <img src="screenshot.jpg" alt="Lot - Scripture Draw Interface" width="800" style="border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" />
   </a>
   <br /><br />
-  <h1>Lot &mdash; A Sacred Scripture Draw </h1>
+  <h1>Lot &mdash; A Sacred Scripture Draw</h1>
   <p>
     <strong>"The lot is cast into the lap, but its every decision is from the Lord." — Proverbs 16:33</strong><br/><br/>
     An ultra-minimalist, mathematically verified instrument for drawing random Bible verses. <br/>
     No curated algorithms. No digital noise. Just the raw, ancient text.
   </p>
   <p>
-    <a href="https://bible-lot.vercel.app/"> Random Bible book/chapter/verse generator(Live Demo)</a>
+    <a href="https://bible-lot.vercel.app/">Enter the Sanctuary (Live Demo)</a>
     ·
     <a href="https://github.com/your-username/lot/issues">Report Bug</a>
     ·
@@ -28,19 +28,23 @@
 
 ## 📖 The Story: Why I Built This
 
-My days are spent building heavy, logic-driven web applications. I architect databases, configure serverless environments, and write TypeScript backend SDKs to parse endless streams of CSV data. 
+My days are spent building heavy, logic-driven web applications. I architect databases, configure serverless environments, and write backend code to parse endless streams of data. But late one night, bathed in the harsh glow of my EliteBook, the digital world felt incredibly shallow. I was experiencing profound tech fatigue. I just wanted a moment of quiet. I wanted to hear from God. 
 
-But late one night, bathed in the harsh glow of my EliteBook with the cooling fans humming against the silence of my room, the digital world felt incredibly shallow. I was experiencing profound tech fatigue. I was tired of algorithms predicting my needs, tired of feeds designed to hack my dopamine, and tired of AI trying to curate my spirituality.
+When I was growing up, I heard it all the time from pastors and mentors: *"If you want to grow spiritually, you need to read your Bible."* 
 
-I yearned for something ancient. Something random. Something entirely out of my control.
+I agreed. But I always struggled.
+
+The reason was simple: too many options. There are 66 books in the Bible. Which one do I start with? Which chapter? Which verse? There’s a concept in psychology called the paradox of choice—when you have too many options, it becomes harder to make any decision at all. That was me. Instead of reading, I’d just get stuck.
+
+Over time, I figured out how to navigate the Word for myself, but along the way, I realized I’m not the only one. There are so many young Christians out there who genuinely want to read their Bible. They want to meditate on it. But the sheer volume leaves them paralyzed. They just don't know where to start.
 
 Throughout scripture, when early believers and ancient priests reached the limits of their own understanding, they didn't rely on logic—they cast lots. It wasn't a gamble; it was an act of total surrender. It was a physical way of stepping aside and saying, *"I don't know, but Providence does."*
 
-I couldn't find a digital tool that respected this sacred randomness. The ones that existed were visually loud, cluttered with ads, or mathematically broken—drawing verses that didn't even exist in the actual text. 
+That is why I created **Lot**.
 
-So, I built **Lot**. 
+I believe every single word in the Bible is important. Every verse, every chapter. When you get the right interpretation, it comes alive and makes sense for your exact season. *Lot* takes away the confusion. It removes the paralyzing question of *"Where do I start?"* and replaces it with a simple, quiet digital sanctuary.
 
-Lot is meant to be a digital sanctuary. It is an instrument designed for a single purpose: to quiet the noise, cast the lot, and let the living Word speak. 
+It simply gives you a random verse, chapter, or book to go and chew on. To meditate on. To grow from. No curated feeds, no algorithms. Just cast the lot, and let God’s Word meet you right where you are.
 
 ## ✨ Features
 
@@ -61,7 +65,8 @@ Lot is meant to be a digital sanctuary. It is an instrument designed for a singl
 
 **Recommended Free Hosts:**
 * [Vercel](https://vercel.com/) (Currently hosted at [bible-lot.vercel.app](https://bible-lot.vercel.app/))
-
+* [Netlify](https://www.netlify.com/)
+* [GitHub Pages](https://pages.github.com/)
 
 ## 🛠 Under the Hood
 
