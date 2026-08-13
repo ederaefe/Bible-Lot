@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Primary Meta Tags -->
+<title>Lot &mdash; Verified Random Scripture Reference Draw</title>
+<meta name="title" content="Lot &mdash; Verified Random Scripture Reference Draw">
+<meta name="description" content="A sleek, minimalist instrument for drawing verified random Bible verses and Scripture references. No algorithms, just the raw ancient text.">
+<meta name="keywords" content="random bible verse, scripture generator, daily devotional, christian web app, random scripture, bible api, minimalist bible, open source christian tech">
+<meta name="author" content="Lot">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#FAF9F6">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://bible-lot.vercel.app/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bible-lot.vercel.app/">
+<meta property="og:title" content="Lot &mdash; Verified Random Scripture Reference Draw">
+<meta property="og:description" content="A sleek, minimalist instrument for drawing verified random Bible verses and Scripture references. Cast the lot, read the text.">
+<meta property="og:image" content="https://bible-lot.vercel.app/og-image.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://bible-lot.vercel.app/">
+<meta property="twitter:title" content="Lot &mdash; Verified Random Scripture Reference Draw">
+<meta property="twitter:description" content="A sleek, minimalist instrument for drawing verified random Bible verses and Scripture references. Cast the lot, read the text.">
+<meta property="twitter:image" content="https://bible-lot.vercel.app/og-image.png">
+
+<!-- Inline Favicon -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%231A1C20' stroke='%23B89947' stroke-width='24'/%3E%3Cpath d='M150 140h150v40h-40v180h70v-40h40v80H150v-40h40V180h-40z' fill='%23FAF9F6'/%3E%3Ccircle cx='415' cy='370' r='32' fill='%238C2B2B'/%3E%3C/svg%3E" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-primary: #FAF9F6;
+  --bg-secondary: #F2EFE9;
+  --bg-panel: #FFFFFF;
+  --ink: #1A1C20;
+  --ink-muted: #5C6068;
+  --ink-faint: #9EA3AD;
+  --brass: #B89947;
+  --brass-dim: #8F7533;
+  --crimson: #8C2B2B;
+  --line: rgba(26, 28, 32, 0.08);
+  --line-strong: rgba(26, 28, 32, 0.16);
+  --shadow-sm: 0 4px 12px rgba(26, 28, 32, 0.03);
+  --shadow-lg: 0 20px 50px -10px rgba(26, 28, 32, 0.08);
+  
+  --font-display: 'Playfair Display', serif;
+  --font-ui: 'Lato', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  
+  --radius: 8px;
+  --radius-sm: 4px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-tap-highlight-color: transparent; }
+body {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  background-image: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--brass); color: #fff; }
+
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ---------- Header & Hamburger ---------- */
+header {
+  padding: 40px 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 40px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.brand span { color: var(--crimson); }
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.menu-toggle span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, background-color 0.3s ease;
+  transform-origin: left center;
+}
+
+.menu-toggle:hover span { background-color: var(--brass); }
+
+.menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translateY(-2px); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; }
+.menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translateY(2px); }
+
+/* ---------- Overlay Sidebar ---------- */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 28, 32, 0.3);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 900;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-primary);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.1);
+  z-index: 950;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  padding: 32px 32px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+
+.sidebar-header h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 48px;
+}
+
+.reset-btn:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.sidebar-content {
+  padding: 24px 32px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.accordion-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 16px;
+}
+
+@media (max-width: 480px) {
+  .accordion-grid { grid-template-columns: 1fr; }
+}
+
+details.accordion {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
+
+details.accordion summary {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+details.accordion summary::-webkit-details-marker { display: none; }
+
+details.accordion summary .arrow {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-right: 1.5px solid var(--ink-muted);
+  border-bottom: 1.5px solid var(--ink-muted);
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+}
+
+details.accordion[open] summary .arrow { transform: rotate(45deg); }
+
+.acc-content {
+  padding: 12px 0 8px;
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.segmented {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.segmented button {
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.segmented button:hover { background: var(--bg-secondary); }
+.segmented button.active {
+  background: var(--bg-secondary);
+  color: var(--ink);
+  font-weight: 600;
+  border-color: var(--line-strong);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chip:hover { border-color: var(--brass); color: var(--ink); }
+.chip.active {
+  background: rgba(184, 153, 71, 0.1);
+  border-color: var(--brass);
+  color: var(--brass-dim);
+  font-weight: 700;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.book-check {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--ink-muted);
+  padding: 4px 6px; border-radius: 4px; cursor: pointer;
+}
+.book-check:hover { background: var(--bg-secondary); }
+.book-check.active { color: var(--ink); font-weight: 600; }
+.book-check input { position: absolute; opacity: 0; width: 0; height: 0; }
+.checkbox-box {
+  width: 14px; height: 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all 0.2s ease;
+}
+.book-check.active .checkbox-box {
+  background: var(--ink); border-color: var(--ink);
+}
+.check-path {
+  fill: none; stroke: #fff; stroke-width: 2.5;
+  stroke-dasharray: 20; stroke-dashoffset: 20;
+  transition: stroke-dashoffset 0.2s ease;
+}
+.book-check.active .check-path { stroke-dashoffset: 0; }
+
+.pool-count {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--ink-faint); margin-top: 16px;
+  text-align: center; border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+/* ---------- Main Stage ---------- */
+.hero-copy { text-align: center; padding-bottom: 24px; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--brass); margin-bottom: 12px;
+}
+h1 {
+  font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 5vw, 44px);
+  color: var(--ink); line-height: 1.1; max-width: 600px; margin: 0 auto;
+}
+h1 em { font-style: italic; font-weight: 400; color: var(--crimson); }
+
+.machine-stage {
+  display: flex; justify-content: center; padding: 20px 0 40px;
+}
+.machine {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px;
+  width: 100%; max-width: 580px;
+  box-shadow: var(--shadow-lg);
+}
+
+.reels {
+  display: flex; gap: 12px; justify-content: center;
+}
+.reel {
+  flex: 1; height: 90px;
+  background: var(--bg-primary);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.reel.hidden-reel { display: none; }
+.reel.locked {
+  border-color: var(--brass);
+  box-shadow: 0 0 0 1px var(--brass);
+}
+.reel-value {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(16px, 3vw, 22px); color: var(--ink);
+  text-align: center; line-height: 1.1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+  padding: 0 8px; transition: transform 0.05s ease;
+}
+.reel.spinning .reel-value { color: var(--ink-faint); filter: blur(0.5px); }
+.reel-label {
+  position: absolute; bottom: 6px; left: 0; right: 0;
+  text-align: center; font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted);
+}
+
+.machine-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-top: 24px;
+}
+
+.spin-btn {
+  flex: 1; border: none;
+  background: var(--ink); color: #fff;
+  font-family: var(--font-ui); font-weight: 700; font-size: 14px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 16px 20px; border-radius: var(--radius-sm);
+  cursor: pointer; box-shadow: var(--shadow-sm);
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+.spin-btn:hover { background: #2c2f36; }
+.spin-btn:active { transform: translateY(1px); }
+.spin-btn:disabled { opacity: 0.6; cursor: default; }
+
+.lever {
+  width: 32px; height: 70px; position: relative; cursor: pointer; flex-shrink: 0;
+}
+.lever-track {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 4px; margin-left: -2px;
+  background: var(--bg-secondary); border-radius: 4px;
+  border: 1px solid var(--line);
+}
+.lever-rod {
+  position: absolute; left: 50%; bottom: 0;
+  width: 4px; height: 60px; margin-left: -2px;
+  background: linear-gradient(180deg, var(--brass), var(--brass-dim));
+  border-radius: 4px; transform-origin: bottom center;
+}
+.lever-knob {
+  position: absolute; left: 50%; bottom: 50px;
+  width: 20px; height: 20px; margin-left: -10px;
+  border-radius: 50%; background: var(--brass);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+@keyframes stringBounceRod {
+  0% { transform: scaleY(1); }
+  35% { transform: scaleY(0.1); }
+  55% { transform: scaleY(0.35); }
+  75% { transform: scaleY(0.15); }
+  90% { transform: scaleY(0.25); }
+  100% { transform: scaleY(0.2); }
+}
+@keyframes stringBounceKnob {
+  0% { transform: translateY(0); }
+  35% { transform: translateY(48px); }
+  55% { transform: translateY(33px); }
+  75% { transform: translateY(45px); }
+  90% { transform: translateY(39px); }
+  100% { transform: translateY(42px); }
+}
+
+.result-line {
+  text-align: center; min-height: 24px; margin-top: 20px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted);
+}
+.result-line strong { color: var(--crimson); font-weight: 500; }
+.word {
+  display: inline-block; opacity: 0; transform: translateY(8px);
+  animation: wordIn 0.4s ease forwards;
+}
+@keyframes wordIn { to { opacity: 1; transform: translateY(0); } }
+
+.verse-container {
+  position: relative;
+  margin-top: 20px;
+  display: none; opacity: 0; transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.verse-container.show { display: block; }
+.verse-container.visible { opacity: 1; transform: translateY(0); }
+
+.verse-block {
+  padding: 24px 24px 32px;
+  background: var(--bg-primary); border: 1px dashed var(--brass-dim);
+  border-radius: var(--radius-sm); font-family: var(--font-display);
+  font-size: 17px; line-height: 1.6; color: var(--ink);
+  text-align: center; font-style: italic;
+}
+
+/* Copy Button */
+.copy-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink-muted);
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.copy-btn svg {
+  width: 16px; height: 16px;
+  fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.copy-btn .tick-icon { display: none; }
+.copy-btn.copied {
+  background: var(--brass);
+  color: #fff;
+  border-color: var(--brass);
+}
+.copy-btn.copied .copy-icon { display: none; }
+.copy-btn.copied .tick-icon {
+  display: block;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  animation: drawTick 0.3s ease forwards;
+}
+
+@keyframes drawTick {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---------- History List ---------- */
+.history-section { max-width: 580px; margin: 0 auto; }
+.history-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 16px;
+}
+.history-head h2 {
+  font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 0;
+}
+.history-empty { text-align: center; color: var(--ink-faint); font-style: italic; padding: 20px; font-size: 14px; }
+.history-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px dashed var(--line);
+  animation: wordIn 0.3s ease both;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brass); flex-shrink: 0; }
+.dot.nt { background: var(--crimson); }
+.history-ref { font-family: var(--font-display); font-weight: 600; font-size: 16px; flex: 1; }
+.history-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); text-transform: uppercase; }
+
+@media (max-width: 600px) {
+  .machine { padding: 20px 16px; }
+  .reel { height: 75px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="brand">Lot<span>.</span></div>
+    <button id="menuBtn" class="menu-toggle" aria-label="Toggle Filters">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Filters</h2>
+      <button id="resetFilters" class="reset-btn">Reset</button>
+    </div>
+    
+    <div class="sidebar-content">
+      <div class="accordion-grid">
+        <details class="accordion" open>
+          <summary>Draw Scope <span class="arrow"></span></summary>
+          <div class="acc-content segmented" id="depthSeg">
+            <button data-depth="book">Book</button>
+            <button data-depth="chapter">+ Chapter</button>
+            <button data-depth="verse" class="active">+ Verse</button>
+          </div>
+        </details>
+
+        <details class="accordion" open>
+          <summary>Testament <span class="arrow"></span></summary>
+          <div class="acc-content segmented" id="testSeg">
+            <button data-test="ALL" class="active">All Testaments</button>
+            <button data-test="OT">Old Testament</button>
+            <button data-test="NT">New Testament</button>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>Genre <span class="arrow"></span></summary>
+          <div class="acc-content chips" id="genreChips"></div>
+        </details>
+
+        <details class="accordion">
+          <summary>Specific Books <span class="arrow"></span></summary>
+          <div class="acc-content book-grid" id="bookGrid"></div>
+        </details>
+      </div>
+      <div class="pool-count" id="poolCount"></div>
+    </div>
+  </aside>
+
+  <div class="hero-copy">
+    <p class="eyebrow">Bible &middot; Chapter &middot; Verse</p>
+    <h1>Draw from the living <em>text</em>.</h1>
+  </div>
+
+  <div class="machine-stage">
+    <div class="machine">
+      <div class="reels" id="reels">
+        <div class="reel" data-reel="book"><span class="reel-value">Genesis</span><span class="reel-label">Book</span></div>
+        <div class="reel" data-reel="chapter"><span class="reel-value">1</span><span class="reel-label">Chapter</span></div>
+        <div class="reel" data-reel="verse"><span class="reel-value">1</span><span class="reel-label">Verse</span></div>
+      </div>
+      
+      <div class="machine-footer">
+        <button class="spin-btn" id="spinBtn">Cast the lot</button>
+        <div class="lever" id="lever" title="Pull to spin">
+          <div class="lever-track"></div>
+          <div class="lever-rod" id="leverRod"></div>
+          <div class="lever-knob" id="leverKnob"></div>
+        </div>
+      </div>
+
+      <!-- Result text & Copy Button wrapper -->
+      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 12px; min-height: 44px; margin-top: 8px;">
+        <div class="result-line" id="resultLine" style="margin-top: 0;">Randomizer active. Tap button or pull string to draw.</div>
+        <button class="copy-btn" id="copyBtn" aria-label="Copy Reference" style="position: relative; bottom: auto; right: auto; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
+          <svg class="copy-icon" viewBox="0 0 24 24">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <svg class="tick-icon" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="verse-container" id="verseContainer">
+        <div class="verse-block" id="verseBlock" style="padding: 24px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="history-section">
+    <div class="history-head">
+      <h2>History </h2>
+      <button id="clearHistoryBtn" class="reset-btn" style="margin: 0; padding: 4px 10px; font-size: 10px;">Clear</button>
+    </div>
+    <div id="historyList">
+      <div class="history-empty">Draw history will appear here.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BIBLE = [["Genesis","OT","Law",[31,25,24,26,32,22,24,22,29,32,32,20,18,24,21,16,27,33,38,18,34,24,20,67,34,35,46,22,35,43,55,32,20,31,29,43,36,30,23,23,57,38,34,34,28,34,31,22,33,26]],["Exodus","OT","Law",[22,25,22,31,23,30,25,32,35,29,10,51,22,31,27,36,16,27,25,26,36,31,33,18,40,37,21,43,46,38,18,35,23,35,35,38,29,31,43,38]],["Leviticus","OT","Law",[17,16,17,35,19,30,38,36,24,20,47,8,59,57,33,34,16,30,37,27,24,33,44,23,55,46,34]],["Numbers","OT","Law",[54,34,51,49,31,27,89,26,23,36,35,16,33,45,41,50,13,32,22,29,35,41,30,25,18,65,23,31,40,16,54,42,56,29,34,13]],["Deuteronomy","OT","Law",[46,37,29,49,33,25,26,20,29,22,32,32,18,29,23,22,20,22,21,20,23,30,25,22,19,19,26,68,29,20,30,52,29,12]],["Joshua","OT","History",[18,24,17,24,15,27,26,35,27,43,23,24,33,15,63,10,18,28,51,9,45,34,16,33]],["Judges","OT","History",[36,23,31,24,31,40,25,35,57,18,40,15,25,20,20,31,13,31,30,48,25]],["Ruth","OT","History",[22,23,18,22]],["1 Samuel","OT","History",[28,36,21,22,12,21,17,22,27,27,15,25,23,52,35,23,58,30,24,42,15,23,29,22,44,25,12,25,11,31,13]],["2 Samuel","OT","History",[27,32,39,12,25,23,29,18,13,19,27,31,39,33,37,23,29,33,43,26,22,51,39,25]],["1 Kings","OT","History",[53,46,28,34,18,38,51,66,28,29,43,33,34,31,34,34,24,46,21,43,29,53]],["2 Kings","OT","History",[18,25,27,44,27,33,20,29,37,36,21,21,25,29,38,20,41,37,37,21,26,20,37,20,30]],["1 Chronicles","OT","History",[54,55,24,43,26,81,40,40,44,14,47,40,14,17,29,43,27,17,19,8,30,19,32,31,31,32,34,21,30]],["2 Chronicles","OT","History",[17,18,17,22,14,42,22,18,31,19,23,16,22,15,19,14,19,34,11,37,20,12,21,27,28,23,9,27,36,27,21,33,25,33,27,23]],["Ezra","OT","History",[11,70,13,24,17,22,28,36,15,44]],["Nehemiah","OT","History",[11,20,32,23,19,19,73,18,38,39,36,47,31]],["Esther","OT","History",[22,23,15,17,14,14,10,17,32,3]],["Job","OT","Wisdom",[22,13,26,21,27,30,21,22,35,22,20,25,28,22,35,22,16,21,29,29,34,30,17,25,6,14,23,28,25,31,40,22,33,37,16,33,24,41,30,24,34,17]],["Psalms","OT","Wisdom",[6,12,8,8,12,10,17,9,20,18,7,8,6,7,5,11,15,50,14,9,13,31,6,10,22,12,14,9,11,12,24,11,22,22,28,12,40,22,13,17,13,11,5,26,17,11,9,14,20,23,19,9,6,7,23,13,11,11,17,12,8,12,11,10,13,20,7,35,36,5,24,20,28,23,10,12,20,72,13,19,16,8,18,12,13,17,7,18,52,17,16,15,5,23,11,13,12,9,9,5,8,28,22,35,45,48,43,13,31,7,10,10,9,8,18,19,2,29,176,7,8,9,4,8,5,6,5,6,8,8,3,18,3,3,21,26,9,8,24,13,10,7,12,15,21,10,20,14,9,6]],["Proverbs","OT","Wisdom",[33,22,35,27,23,35,27,36,18,32,31,28,25,35,33,33,28,24,29,30,31,29,35,34,28,28,27,28,27,33,31]],["Ecclesiastes","OT","Wisdom",[18,26,22,16,20,12,29,17,18,20,10,14]],["Song of Solomon","OT","Wisdom",[17,17,11,16,16,13,13,14]],["Isaiah","OT","Prophets",[31,22,26,6,30,13,25,22,21,34,16,6,22,32,9,14,14,7,25,6,17,25,18,23,12,21,13,29,24,33,9,20,24,17,10,22,38,22,8,31,29,25,28,28,25,13,15,22,26,11,23,15,12,17,13,12,21,14,21,22,11,12,19,12,25,24]],["Jeremiah","OT","Prophets",[19,37,25,31,31,30,34,22,26,25,23,17,27,22,21,21,27,23,15,18,14,30,40,10,38,24,22,17,32,24,40,44,26,22,19,32,21,28,18,16,18,22,13,30,5,28,7,47,39,46,64,34]],["Lamentations","OT","Prophets",[22,22,66,22,22]],["Ezekiel","OT","Prophets",[28,10,27,17,17,14,27,18,11,22,25,28,23,23,8,63,24,32,14,49,32,31,49,27,17,21,36,26,21,26,18,32,33,31,15,38,28,23,29,49,26,20,27,31,25,24,23,35]],["Daniel","OT","Prophets",[21,49,30,37,31,28,28,27,27,21,45,13]],["Hosea","OT","Prophets",[11,23,5,19,15,11,16,14,17,15,12,14,16,9]],["Joel","OT","Prophets",[20,32,21]],["Amos","OT","Prophets",[15,16,15,13,27,14,17,14,15]],["Obadiah","OT","Prophets",[21]],["Jonah","OT","Prophets",[17,10,10,11]],["Micah","OT","Prophets",[16,13,12,13,15,16,20]],["Nahum","OT","Prophets",[15,13,19]],["Habakkuk","OT","Prophets",[17,20,19]],["Zephaniah","OT","Prophets",[18,15,20]],["Haggai","OT","Prophets",[15,23]],["Zechariah","OT","Prophets",[21,13,10,14,11,15,14,23,17,12,17,14,9,21]],["Malachi","OT","Prophets",[14,17,18,6]],["Matthew","NT","Gospels",[25,23,17,25,48,34,29,34,38,42,30,50,58,36,39,28,27,35,30,34,46,46,39,51,46,75,66,20]],["Mark","NT","Gospels",[45,28,35,41,43,56,37,38,50,52,33,44,37,72,47,20]],["Luke","NT","Gospels",[80,52,38,44,39,49,50,56,62,42,54,59,35,35,32,31,37,43,48,47,38,71,56,53]],["John","NT","Gospels",[51,25,36,54,47,71,53,59,41,42,57,50,38,31,27,33,26,40,42,31,25]],["Acts","NT","Acts",[26,47,26,37,42,15,60,40,43,48,30,25,52,28,41,40,34,28,41,38,40,30,35,27,27,32,44,31]],["Romans","NT","Epistles",[32,29,31,25,21,23,25,39,33,21,36,21,14,23,33,27]],["1 Corinthians","NT","Epistles",[31,16,23,21,13,20,40,13,27,33,34,31,13,40,58,24]],["2 Corinthians","NT","Epistles",[24,17,18,18,21,18,16,24,15,18,33,21,14]],["Galatians","NT","Epistles",[24,21,29,31,26,18]],["Ephesians","NT","Epistles",[23,22,21,32,33,24]],["Philippians","NT","Epistles",[30,30,21,23]],["Colossians","NT","Epistles",[29,23,25,18]],["1 Thessalonians","NT","Epistles",[10,20,13,18,28]],["2 Thessalonians","NT","Epistles",[12,17,18]],["1 Timothy","NT","Epistles",[20,15,16,16,25,21]],["2 Timothy","NT","Epistles",[18,26,17,22]],["Titus","NT","Epistles",[16,15,15]],["Philemon","NT","Epistles",[25]],["Hebrews","NT","Epistles",[14,18,19,16,14,20,28,13,28,39,40,29,25]],["James","NT","Epistles",[27,26,18,17,20]],["1 Peter","NT","Epistles",[25,25,22,19,14]],["2 Peter","NT","Epistles",[21,22,18]],["1 John","NT","Epistles",[10,29,24,21,21]],["2 John","NT","Epistles",[13]],["3 John","NT","Epistles",[14]],["Jude","NT","Epistles",[25]],["Revelation","NT","Prophecy",[20,29,22,11,14,17,17,13,21,11,19,17,18,20,8,21,18,24,21,15,27,21]]];
+
+const GENRES = ["Law","History","Wisdom","Prophets","Gospels","Acts","Epistles","Prophecy"];
+
+const state = {
+  depth: "verse",
+  testament: "ALL",
+  genres: new Set(),
+  books: new Set(),
+  history: [],
+  spinning: false
+};
+
+// --- Filter Caching Logic ---
+function saveFilters() {
+  const filters = {
+    depth: state.depth,
+    testament: state.testament,
+    genres: Array.from(state.genres),
+    books: Array.from(state.books)
+  };
+  localStorage.setItem("lot_filters", JSON.stringify(filters));
+}
+
+function loadFilters() {
+  const cached = localStorage.getItem("lot_filters");
+  if (!cached) return;
+  try {
+    const f = JSON.parse(cached);
+    state.depth = f.depth || "verse";
+    state.testament = f.testament || "ALL";
+    state.genres = new Set(f.genres || []);
+    state.books = new Set(f.books || []);
+
+    document.querySelectorAll('#depthSeg button').forEach(btn => btn.classList.toggle('active', btn.dataset.depth === state.depth));
+    document.querySelectorAll('#testSeg button').forEach(btn => btn.classList.toggle('active', btn.dataset.test === state.testament));
+    
+    document.querySelectorAll('#genreChips .chip').forEach(btn => {
+      btn.classList.toggle('active', state.genres.has(btn.textContent));
+    });
+    
+    document.querySelectorAll('.book-check').forEach(label => {
+      const name = label.querySelector('span:last-child').textContent;
+      const isActive = state.books.has(name);
+      label.classList.toggle('active', isActive);
+      label.querySelector('input').checked = isActive;
+    });
+
+    applyDepthVisibility();
+    refreshPoolCount();
+  } catch (err) {
+    console.error("Error parsing cached filters", err);
+  }
+}
+
+// --- Initialization & Local Storage ---
+window.addEventListener("DOMContentLoaded", () => {
+  const cachedHistory = localStorage.getItem("lot_draw_history");
+  if (cachedHistory) {
+    try {
+      state.history = JSON.parse(cachedHistory);
+      renderHistory();
+    } catch (error) {
+      console.error("Failed to parse cached history", error);
+    }
+  }
+  loadFilters();
+});
+
+document.getElementById("clearHistoryBtn").addEventListener("click", () => {
+  state.history = [];
+  localStorage.removeItem("lot_draw_history");
+  renderHistory();
+  const listEl = document.getElementById("historyList");
+  listEl.innerHTML = `<div class="history-empty">History cleared.</div>`;
+});
+
+// --- UI Actions & Sidebar ---
+const menuBtn = document.getElementById('menuBtn');
+const sidebar = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+function toggleMenu() {
+  const isOpen = menuBtn.classList.toggle('open');
+  sidebar.classList.toggle('active', isOpen);
+  sidebarOverlay.classList.toggle('active', isOpen);
+}
+menuBtn.addEventListener('click', toggleMenu);
+sidebarOverlay.addEventListener('click', toggleMenu);
+
+const genreChipsEl = document.getElementById("genreChips");
+GENRES.forEach(g => {
+  const btn = document.createElement("button");
+  btn.className = "chip";
+  btn.textContent = g;
+  btn.addEventListener("click", () => {
+    if(state.genres.has(g)) { state.genres.delete(g); btn.classList.remove("active"); }
+    else { state.genres.add(g); btn.classList.add("active"); }
+    refreshPoolCount();
+    saveFilters();
+  });
+  genreChipsEl.appendChild(btn);
+});
+
+const bookGridEl = document.getElementById("bookGrid");
+BIBLE.forEach(([name]) => {
+  const label = document.createElement("label");
+  label.className = "book-check";
+  label.innerHTML = `<input type="checkbox"><span class="checkbox-box"><svg viewBox="0 0 16 16"><path class="check-path" d="M3 8.5L6.5 12L13 4.5"/></svg></span><span>${name}</span>`;
+  const input = label.querySelector("input");
+  input.addEventListener("change", () => {
+    if(input.checked) { state.books.add(name); label.classList.add("active"); }
+    else { state.books.delete(name); label.classList.remove("active"); }
+    refreshPoolCount();
+    saveFilters();
+  });
+  bookGridEl.appendChild(label);
+});
+
+document.getElementById("depthSeg").addEventListener("click", (e) => {
+  if(e.target.tagName !== 'BUTTON') return;
+  state.depth = e.target.dataset.depth;
+  [...e.currentTarget.children].forEach(btn => btn.classList.toggle('active', btn === e.target));
+  applyDepthVisibility();
+  saveFilters();
+});
+
+document.getElementById("testSeg").addEventListener("click", (e) => {
+  if(e.target.tagName !== 'BUTTON') return;
+  state.testament = e.target.dataset.test;
+  [...e.currentTarget.children].forEach(btn => btn.classList.toggle('active', btn === e.target));
+  refreshPoolCount();
+  saveFilters();
+});
+
+document.getElementById("resetFilters").addEventListener("click", () => {
+  state.genres.clear();
+  state.books.clear();
+  state.testament = "ALL";
+  state.depth = "verse";
+  
+  document.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.book-check.active').forEach(c => {
+    c.classList.remove('active');
+    c.querySelector('input').checked = false;
+  });
+  
+  [...document.getElementById("testSeg").children].forEach(b => b.classList.toggle('active', b.dataset.test === "ALL"));
+  [...document.getElementById("depthSeg").children].forEach(b => b.classList.toggle('active', b.dataset.depth === "verse"));
+  
+  applyDepthVisibility();
+  refreshPoolCount();
+  saveFilters();
+});
+
+function applyDepthVisibility(){
+  const order = {book:0, chapter:1, verse:2};
+  const showUpTo = order[state.depth];
+  document.querySelectorAll(".reel").forEach(reel => {
+    reel.classList.toggle("hidden-reel", order[reel.dataset.reel] > showUpTo);
+  });
+}
+applyDepthVisibility();
+
+function getPool(){
+  let pool = BIBLE;
+  if(state.testament !== "ALL") pool = pool.filter(b => b[1] === state.testament);
+  if(state.genres.size > 0) pool = pool.filter(b => state.genres.has(b[2]));
+  if(state.books.size > 0) pool = pool.filter(b => state.books.has(b[0]));
+  return pool;
+}
+
+function refreshPoolCount(){
+  const pool = getPool();
+  const el = document.getElementById('poolCount');
+  el.textContent = pool.length > 0
+    ? `${pool.length} book${pool.length===1?"":"s"} matched`
+    : "No books match filters";
+}
+refreshPoolCount();
+
+function randInt(max){ return Math.floor(Math.random()*max); }
+
+function refKey(res){
+  if(res.depth === "book") return res.book;
+  if(res.depth === "chapter") return `${res.book} ${res.chapter}`;
+  return `${res.book} ${res.chapter}:${res.verse}`;
+}
+
+function generateDraw(){
+  const pool = getPool();
+  if(pool.length === 0) return null;
+
+  const recentHistory = state.history.slice(0, 30).filter(h => h.depth === state.depth).map(refKey);
+  const seen = new Set(recentHistory);
+
+  let attempt = null;
+  let fallback = null;
+  
+  for(let i=0; i<150; i++) {
+    const bookEntry = pool[randInt(pool.length)];
+    const [name, test, genre, counts] = bookEntry;
+    const chapter = randInt(counts.length) + 1;
+    const verseCount = counts[chapter-1];
+    const verse = randInt(verseCount) + 1;
+    
+    const candidate = { book:name, testament:test, genre, chapter, verse, depth: state.depth };
+    if(!fallback) fallback = candidate;
+    if(!seen.has(refKey(candidate))) { attempt = candidate; break; }
+  }
+  return attempt || fallback;
+}
+
+function reelEl(name){ return document.querySelector(`.reel[data-reel="${name}"] .reel-value`); }
+function reelBox(name){ return document.querySelector(`.reel[data-reel="${name}"]`); }
+
+function randomBookLabel(pool){ return pool[randInt(pool.length)][0]; }
+
+function flicker(el, box, valuesFn, duration, finalValue){
+  return new Promise(resolve => {
+    box.classList.add("spinning");
+    box.classList.remove("locked");
+    const start = performance.now();
+    function tick(now){
+      const elapsed = now - start;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1-t, 3);
+      el.textContent = valuesFn();
+      
+      if(elapsed < duration){
+        setTimeout(() => requestAnimationFrame(tick), 35 + eased * 120);
+      } else {
+        el.textContent = finalValue;
+        box.classList.remove("spinning");
+        box.classList.add("locked");
+        resolve();
+      }
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+function revealResult(segments){
+  const el = document.getElementById("resultLine");
+  let i = 0;
+  el.innerHTML = segments.map(seg => {
+    const words = seg.text.split(" ").filter(w=>w.length);
+    return words.map(w => {
+      const html = seg.strong ? `<strong>${w}</strong>` : w;
+      return `<span class="word" style="animation-delay:${(i++)*25}ms">${html}</span>`;
+    }).join(" ");
+  }).join(" ");
+}
+
+async function fetchVerseText(result) {
+  const textEl = document.getElementById("verseBlock");
+  const containerEl = document.getElementById("verseContainer");
+  const ref = `${result.book.replace(/ /g, "+")}+${result.chapter}:${result.verse}`;
+  try {
+    const res = await fetch(`https://bible-api.com/${ref}`);
+    if(res.ok) {
+      const data = await res.json();
+      textEl.textContent = `"${data.text.trim()}"`;
+      containerEl.classList.add("show");
+      requestAnimationFrame(() => requestAnimationFrame(() => containerEl.classList.add("visible")));
+    }
+  } catch (err) { /* silent fail */ }
+}
+
+async function spin(){
+  if(state.spinning) return;
+  const pool = getPool();
+  if(pool.length === 0){
+    revealResult([{text:"Zero books match current parameters.", strong:false}]);
+    return;
+  }
+  
+  const result = generateDraw();
+  if(!result) return;
+  state.spinning = true;
+  document.getElementById("spinBtn").disabled = true;
+
+  document.getElementById("verseContainer").classList.remove("visible", "show");
+  document.getElementById("copyBtn").style.opacity = "0";
+  document.getElementById("copyBtn").style.pointerEvents = "none";
+  document.querySelectorAll(".reel").forEach(r => r.classList.remove("locked"));
+  revealResult([{text:"Commencing draw sequence...", strong:false}]);
+
+  const historyFactor = Math.min(state.history.length, 30);
+  const totalSpinTime = 3000 + (historyFactor * 50);
+
+  const rod = document.getElementById('leverRod');
+  const knob = document.getElementById('leverKnob');
+  
+  rod.style.transition = 'none';
+  knob.style.transition = 'none';
+  rod.style.animation = 'stringBounceRod 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards';
+  knob.style.animation = 'stringBounceKnob 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards';
+
+  setTimeout(() => {
+    rod.style.animation = 'none';
+    knob.style.animation = 'none';
+    rod.style.transform = 'scaleY(0.2)';
+    knob.style.transform = 'translateY(42px)';
+    void rod.offsetWidth;
+    
+    const riseTime = totalSpinTime - 500;
+    rod.style.transition = `transform ${riseTime}ms linear`;
+    knob.style.transition = `transform ${riseTime}ms linear`;
+    
+    rod.style.transform = 'scaleY(1)';
+    knob.style.transform = 'translateY(0)';
+  }, 500);
+
+  const activeFlickers = [];
+  activeFlickers.push(flicker(reelEl("book"), reelBox("book"), () => randomBookLabel(pool), totalSpinTime * 0.70, result.book));
+  
+  if(state.depth !== "book"){
+    const chapterCount = BIBLE.find(b=>b[0]===result.book)[3].length;
+    activeFlickers.push(flicker(reelEl("chapter"), reelBox("chapter"), () => String(randInt(chapterCount)+1), totalSpinTime * 0.85, String(result.chapter)));
+  }
+  if(state.depth === "verse"){
+    const verseCount = BIBLE.find(b=>b[0]===result.book)[3][result.chapter-1];
+    activeFlickers.push(flicker(reelEl("verse"), reelBox("verse"), () => String(randInt(verseCount)+1), totalSpinTime, String(result.verse)));
+  }
+
+  await Promise.all(activeFlickers);
+
+  result.ts = Date.now();
+  state.history.unshift(result);
+  localStorage.setItem("lot_draw_history", JSON.stringify(state.history));
+  renderHistory();
+
+  revealResult([
+    {text:"", strong:false},
+    {text:refKey(result), strong:true},
+    {text:`— ${result.genre}, ${result.testament === "OT" ? "Old Testament" : "New Testament"}`, strong:false}
+  ]);
+  
+  if (state.depth === "verse") { await fetchVerseText(result); }
+  
+  document.getElementById("spinBtn").disabled = false;
+  state.spinning = false;
+
+  const copyBtn = document.getElementById("copyBtn");
+  copyBtn.style.opacity = "1";
+  copyBtn.style.pointerEvents = "all";
+}
+
+document.getElementById("spinBtn").addEventListener("click", spin);
+document.getElementById("lever").addEventListener("click", spin);
+
+// --- Copy Functionality ---
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  const verseBlock = document.getElementById('verseBlock');
+  const verseText = verseBlock.textContent.replace(/"/g, '').trim();
+  
+  const refText = document.querySelector('.result-line strong').textContent;
+  
+  let fullText = refText;
+  if (verseText && state.depth === "verse") {
+    fullText = `${refText}\n"${verseText}"`;
+  }
+
+  try {
+    await navigator.clipboard.writeText(fullText);
+    
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 2000);
+  } catch (err) {
+    console.error('Failed to copy', err);
+  }
+});
+
+function timeAgo(ts){
+  const s = Math.floor((Date.now()-ts)/1000);
+  if(s < 5) return "just now";
+  if(s < 60) return `${s}s`;
+  const m = Math.floor(s/60);
+  if(m < 60) return `${m}m`;
+  return `${Math.floor(m/60)}h`;
+}
+
+function renderHistory(){
+  const el = document.getElementById("historyList");
+  if(state.history.length === 0){
+    el.innerHTML = `<div class="history-empty">Draw history will appear here.</div>`;
+    return;
+  }
+  el.innerHTML = state.history.slice(0, 50).map(h => `
+    <div class="history-row">
+      <span class="dot ${h.testament==='NT' ? 'nt':''}"></span>
+      <span class="history-ref">${refKey(h)}</span>
+      <span class="history-meta">${h.genre} &middot; ${timeAgo(h.ts||Date.now())}</span>
+    </div>
+  `).join("");
+}
+</script>
+</body>
+</html>
