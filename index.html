@@ -487,8 +487,8 @@ h1 em { font-style: italic; font-weight: 400; color: var(--crimson); }
   text-align: center; font-style: italic;
 }
 
-/* Copy Button */
-.copy-btn {
+/* Action Buttons (Copy & Bible Link) */
+.action-btn {
   background: var(--bg-secondary);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
@@ -499,16 +499,17 @@ h1 em { font-style: italic; font-weight: 400; color: var(--crimson); }
   justify-content: center;
   cursor: pointer;
   color: var(--ink-muted);
+  text-decoration: none;
   transition: all 0.2s ease;
 }
 
-.copy-btn:hover {
+.action-btn:hover {
   background: var(--ink);
   color: #fff;
   border-color: var(--ink);
 }
 
-.copy-btn svg {
+.action-btn svg {
   width: 16px; height: 16px;
   fill: none; stroke: currentColor;
   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
@@ -638,10 +639,12 @@ h1 em { font-style: italic; font-weight: 400; color: var(--crimson); }
         </div>
       </div>
 
-      <!-- Result text & Copy Button wrapper -->
-      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 12px; min-height: 44px; margin-top: 8px;">
+      <!-- Result text & Action Buttons wrapper -->
+      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 10px; min-height: 44px; margin-top: 8px;">
         <div class="result-line" id="resultLine" style="margin-top: 0;">Randomizer active. Tap button or pull string to draw.</div>
-        <button class="copy-btn" id="copyBtn" aria-label="Copy Reference" style="position: relative; bottom: auto; right: auto; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
+        
+        <!-- Copy Button -->
+        <button class="action-btn copy-btn" id="copyBtn" aria-label="Copy Reference" style="position: relative; bottom: auto; right: auto; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
           <svg class="copy-icon" viewBox="0 0 24 24">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -650,6 +653,15 @@ h1 em { font-style: italic; font-weight: 400; color: var(--crimson); }
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </button>
+
+        <!-- Read on YouVersion Link -->
+        <a href="#" class="action-btn bible-link" id="bibleLink" target="_blank" rel="noopener noreferrer" aria-label="Read on YouVersion" title="Read in YouVersion Bible App" style="display: none; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
       </div>
       
       <div class="verse-container" id="verseContainer">
@@ -956,6 +968,13 @@ async function spin(){
   document.getElementById("verseContainer").classList.remove("visible", "show");
   document.getElementById("copyBtn").style.opacity = "0";
   document.getElementById("copyBtn").style.pointerEvents = "none";
+  
+  // Hide YouVersion Link on new spin
+  const bibleLink = document.getElementById("bibleLink");
+  bibleLink.style.opacity = "0";
+  bibleLink.style.pointerEvents = "none";
+  setTimeout(() => bibleLink.style.display = "none", 300);
+
   document.querySelectorAll(".reel").forEach(r => r.classList.remove("locked"));
   revealResult([{text:"Commencing draw sequence...", strong:false}]);
 
@@ -1018,6 +1037,26 @@ async function spin(){
   const copyBtn = document.getElementById("copyBtn");
   copyBtn.style.opacity = "1";
   copyBtn.style.pointerEvents = "all";
+
+  // Generate YouVersion Search/Reader Deep Link dynamically
+  let queryStr = result.book;
+  if (result.depth === "chapter" || result.depth === "verse") {
+    queryStr += ` ${result.chapter}`;
+  }
+  if (result.depth === "verse") {
+    queryStr += `:${result.verse}`;
+  }
+  
+  bibleLink.href = `https://www.bible.com/search/bible?q=${encodeURIComponent(queryStr)}`;
+  bibleLink.style.display = "flex";
+  
+  // Brief delay to allow display: flex to apply before transitioning opacity
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bibleLink.style.opacity = "1";
+      bibleLink.style.pointerEvents = "all";
+    });
+  });
 }
 
 document.getElementById("spinBtn").addEventListener("click", spin);
